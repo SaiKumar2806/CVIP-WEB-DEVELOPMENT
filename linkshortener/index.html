@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Shoretener</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Monaco&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="shortener-container">
+        <h1 id="urlHeading">Link Shortener</h1>
+        <input type="text" id="originalUrl" placeholder="Enter the original URL">
+        <button id="shortenBtn" onclick="shortenLink()">Shortern</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        const urlMap = {};
+        function shortenLink() {
+            const originalUrl = document.getElementById('originalUrl').value;
+            const shortenedUrl = generateShortUrl(originalUrl);
+            urlMap[shortenedUrl] = originalUrl;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `Shortened URL: <a href="${shortenedUrl}" target="_blank">${shortenedUrl}</a>`;
+            document.getElementById('shortenBtn').style.backgroundColor = '#2ecc71'; 
+            setInterval(changeHeadingColor, 1000); 
+        }
+        function changeHeadingColor() {
+            const heading = document.getElementById('urlHeading');
+            const colors = ['#e81e14', '#0ed7e6', '#e81e14', '#0ed7e6']; 
+            const randomColor = colors[Math.floor(Math.random() * colors.length)]; 
+            heading.style.color = randomColor; 
+        }
+        function generateShortUrl(originalUrl) {
+            const randomString = Math.random().toString(36).substring(2, 8);
+            return `http://example.com/${randomString}`;
+        }
+        document.addEventListener('click', function(event) {
+            if (event.target.tagName === 'A' && event.target.href.startsWith('http://example.com/')) {
+                event.preventDefault();
+                const shortenedUrl = event.target.href;
+                const originalUrl = urlMap[shortenedUrl];
+                window.open(originalUrl, '_blank');
+            }
+        });
+    </script>
+</body>
+</html>
